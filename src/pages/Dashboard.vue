@@ -73,12 +73,40 @@
   </div>
 </template>
 <script>
-import { StatsCard, ChartCard } from "@/components/index";
 import Chartist from 'chartist';
+import axios from 'axios';
+import { StatsCard, ChartCard } from "@/components/index";
+import { GET_CAPACITY_URL } from "../constants";
 export default {
   components: {
     StatsCard,
     ChartCard
+  },
+  created() {
+    const currentDate = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(currentDate.getDate() + 1);
+
+    const params = {
+      fromDate: currentDate,
+      toDate: tomorrow
+    };
+
+    axios.get(`${GET_CAPACITY_URL}`, {
+      params
+    }).then((resp) => {
+      if (resp.data) {
+        let key, keys = Object.keys(resp.data);
+        let n = keys.length;
+        let newObj = {};
+        while (n--) {
+          key = keys[n];
+          key = key.charAt(0).toLowerCase() + key.slice(1);
+          newObj[key] = resp.data[keys[n]];
+        }
+        this.statsCards.push(newObj);
+      }
+    });
   },
   /**
    * Chart data used to render stats, charts. Should be replaced with server data
@@ -86,14 +114,6 @@ export default {
   data() {
     return {
       statsCards: [
-        {
-          type: "warning",
-          icon: "ti-server",
-          title: "Capacity",
-          value: "105GB",
-          footerText: "Updated now",
-          footerIcon: "ti-reload"
-        },
         {
           type: "success",
           icon: "ti-wallet",

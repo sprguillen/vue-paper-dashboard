@@ -37,6 +37,14 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" @click="userLogout">
+              <i class="ti-power-off"></i>
+              <p>
+                Logout
+              </p>
+            </a>
+          </li>
         </ul>
       </div>
     </div></nav>
@@ -69,6 +77,19 @@ export default {
     },
     hideSidebar() {
       this.$sidebar.displaySidebar(false);
+    },
+    /**
+     * Logout click handler
+     */
+    userLogout() {
+      this.logout();
+      this.$router.go();
+    },
+    /**
+     * Calls the logout vuex action
+     */
+    logout() {
+      this.$store.dispatch('logoutAction');
     }
   }
 };

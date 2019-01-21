@@ -55,7 +55,7 @@ const routes = [
       }
     ]
   },
-  { path: "/login", component: Login }
+  { path: "/login", name: "login", component: Login }
 ];
 
 /**

@@ -43,6 +43,9 @@
   </section>
 </template>
 <script>
+import axios from 'axios';
+import { LOGIN_URL } from '../constants';
+
 export default {
   name: 'Login',
   data() {
@@ -63,6 +66,9 @@ export default {
     }
   },
   methods: {
+    /**
+     * Change field type click handler
+     */
     changePassFieldType() {
       if (this.passFieldType === 'password') {
         this.passFieldType = 'text';
@@ -70,8 +76,27 @@ export default {
         this.passFieldType = 'password';
       }
     },
+    /**
+     * Form submit handler
+     */
     onSubmit() {
-      console.log('here');
+      axios.post(LOGIN_URL, {
+        email: this.form.email,
+        password: this.form.pass
+      }).then((resp) => {
+        if (resp.data) {
+          this.login();
+          this.$router.go();
+        } else {
+          this.$toasted.error('Invalid email and/or password');
+        }
+      })
+    },
+    /**
+     * Calls the login vuex action
+     */
+    login() {
+      this.$store.dispatch('loginAction', this.form.email);
     }
   }
 }
