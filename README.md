@@ -31,6 +31,12 @@ npm run build
 ```
 npm run lint
 ```
+## Server
+
+To run the server just go to the server directory and run `go build server.go`
+then run the executable file by running `./server`. It should run a server on
+PORT 8000
+
 ## Contribution guide
 * Fork the repository
 * `npm install` or `yarn install`
